@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Healthcare App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f9fa;
+            --card-bg: #ffffff;
+            --text-main: #1a202c;
+            --text-secondary: #718096;
+            --accent-color: #0d9488;
+            --accent-bg: #e6fffa;
+            --border-color: #edf2f7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 414px;
+            height: 896px;
+            max-height: 90vh;
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-y: auto;
+            box-shadow: var(--shadow-md);
+            border-radius: 36px;
+            border: 10px solid #1a202c;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .rtl-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .rtl-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .header {
+            padding: 40px 20px 20px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(247, 249, 250, 0.85);
+            backdrop-filter: blur(16px);
+            z-index: 10;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            margin-inline-end: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .back-btn:active {
+            background: rgba(0,0,0,0.05);
+        }
+
+        html[dir="rtl"] .back-icon {
+            transform: rotate(180deg);
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .content {
+            padding: 0 20px 40px;
+            flex-grow: 1;
+        }
+
+        .privacy-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+            margin-top: 10px;
+        }
+
+        .date-updated {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .privacy-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            margin-top: 24px;
+        }
+
+        .privacy-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .privacy-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="rtl-toggle" onclick="toggleRTL()">Switch to RTL / LTR</button>
+
+    <div class="mobile-container">
+        
+        <header class="header">
+            <a href="security.html" class="back-btn" aria-label="Go back">
+                <svg class="back-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </a>
+            <h1 class="title" data-i18n="privacy_policy">Privacy Policy</h1>
+        </header>
+
+        <main class="content">
+            <div class="privacy-content">
+                <span class="date-updated" data-i18n="last_updated">Last Updated: October 2026</span>
+                
+                <h3 class="privacy-section-title" data-i18n="intro_title">1. Introduction</h3>
+                <p class="privacy-text" data-i18n="intro_text">
+                    Welcome to our Healthcare App. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us.
+                </p>
+
+                <h3 class="privacy-section-title" data-i18n="info_collect">2. Information We Collect</h3>
+                <p class="privacy-text" data-i18n="collect_text">
+                    We collect personal information that you voluntarily provide to us when registering at the Services, expressing an interest in obtaining information about us or our products and services, when participating in activities on the Services or otherwise contacting us.
+                </p>
+
+                <h3 class="privacy-section-title" data-i18n="how_use">3. How We Use Your Information</h3>
+                <p class="privacy-text" data-i18n="use_text">
+                    We use personal information collected via our Services for a variety of business purposes described below. We process your personal information for these purposes in reliance on our legitimate business interests, in order to enter into or perform a contract with you, with your consent, and/or for compliance with our legal obligations.
+                </p>
+
+                <h3 class="privacy-section-title" data-i18n="shared_info">4. Will Your Information Be Shared?</h3>
+                <p class="privacy-text" data-i18n="share_text">
+                    We only share information with your consent, to comply with laws, to provide you with services, to protect your rights, or to fulfill business obligations.
+                </p>
+
+                <h3 class="privacy-section-title" data-i18n="data_retention">5. Data Retention</h3>
+                <p class="privacy-text" data-i18n="retention_text">
+                    We will only keep your personal information for as long as it is necessary for the purposes set out in this privacy policy, unless a longer retention period is required or permitted by law.
+                </p>
+                
+                <h3 class="privacy-section-title" data-i18n="med_data_sec">6. Medical Data Security</h3>
+                <p class="privacy-text" data-i18n="med_sec_text">
+                    We implement appropriate technical and organizational security measures designed to protect the security of any personal and medical information we process. However, please also remember that we cannot guarantee that the internet itself is 100% secure.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="translations.js"></script>
+</body>
+</html>

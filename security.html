@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Privacy - Healthcare App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f9fa; /* Soft background */
+            --card-bg: #ffffff;
+            --text-main: #1a202c;
+            --text-secondary: #718096;
+            --accent-color: #0d9488; /* Soft medical teal */
+            --accent-bg: #e6fffa;
+            --border-color: #edf2f7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+            --toggle-bg: #cbd5e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Mockup Container */
+        .mobile-container {
+            width: 100%;
+            max-width: 414px; /* Mobile width */
+            height: 896px; /* Mobile height */
+            max-height: 90vh; /* Responsive height */
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-y: auto;
+            box-shadow: var(--shadow-md);
+            border-radius: 36px; /* Phone frame */
+            border: 10px solid #1a202c; /* Phone bezel */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Webkit scrollbar for mockup */
+        .mobile-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* RTL Toggle for preview purposes */
+        .rtl-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .rtl-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 20px 20px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(247, 249, 250, 0.85);
+            backdrop-filter: blur(16px);
+            z-index: 10;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            margin-inline-end: 12px;
+            color: var(--text-main);
+        }
+
+        .back-btn:active {
+            background: rgba(0,0,0,0.05);
+        }
+
+        html[dir="rtl"] .back-icon {
+            transform: rotate(180deg);
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 0 20px 40px;
+            flex-grow: 1;
+        }
+
+        /* Section Header */
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            margin-top: 28px;
+            padding-inline-start: 4px;
+        }
+
+        /* Cards Grouping */
+        .card-group {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* List Items */
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:active {
+            background-color: #f8fafc;
+        }
+
+        .item-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--accent-bg);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-inline-end: 16px;
+            flex-shrink: 0;
+        }
+
+        .item-icon.legal-icon {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .item-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-main);
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .item-action {
+            margin-inline-start: 16px;
+            color: #a0aec0;
+            display: flex;
+            align-items: center;
+        }
+
+        html[dir="rtl"] .forward-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Toggle Switch (iOS Style) */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 30px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg);
+            transition: .3s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* LTR Positioning */
+        html[dir="ltr"] .slider:before {
+            left: 2px;
+        }
+        
+        html[dir="ltr"] input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* RTL Positioning */
+        html[dir="rtl"] .slider:before {
+            right: 2px;
+        }
+        
+        html[dir="rtl"] input:checked + .slider:before {
+            transform: translateX(-22px);
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+        
+        /* Password Form */
+        .password-form {
+            display: none;
+            padding: 0 20px 24px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .password-form.active {
+            display: block;
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            padding-inline-end: 44px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .form-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            top: 36px;
+            inset-inline-end: 12px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .forgot-password-txt {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .forgot-password-txt:active {
+            opacity: 0.7;
+        }
+
+        .primary-btn {
+            width: 100%;
+            height: 52px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 28px;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+        }
+
+        .primary-btn:active {
+            transform: scale(0.98);
+            background: #0f766e;
+            box-shadow: 0 2px 6px rgba(13, 148, 136, 0.2);
+        }
+
+        .item-action .rotate-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .list-item.active .rotate-icon {
+            transform: rotate(90deg);
+        }
+        html[dir="rtl"] .list-item.active .rotate-icon {
+            transform: rotate(-90deg);
+        }
+        
+        /* Bottom Sheet Styles */
+        .bottom-sheet-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: flex-end;
+            border-radius: 36px;
+            overflow: hidden;
+        }
+
+        .bottom-sheet-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .bottom-sheet-modal {
+            background: var(--card-bg);
+            width: 100%;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 24px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        .bottom-sheet-overlay.active .bottom-sheet-modal {
+            transform: translateY(0);
+        }
+
+        .modal-drag-handle {
+            width: 40px;
+            height: 4px;
+            background: #cbd5e0;
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .modal-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Tabs */
+        .tab-group {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: var(--accent-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* OTP Inputs */
+        .otp-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            direction: ltr; /* OTP usually handled LTR visually */
+        }
+        
+        .otp-input {
+            width: 48px;
+            height: 56px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
+
+        /* Errors & Timers */
+        .timer-text {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: -8px;
+            margin-bottom: 20px;
+        }
+        .timer-val {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .primary-btn:disabled {
+            background: #cbd5e0;
+            color: #ffffff;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .error-text {
+            display: none;
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .error-text.active {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        .form-input.input-error {
+            border-color: #e53e3e;
+            background: #fff5f5;
+        }
+        
+        .form-input.input-error:focus {
+            box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.1);
+        }
+
+        /* Modal Steps Logic */
+        .step-container {
+            display: none;
+        }
+        .step-container.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        /* Toast */
+        .toast-notification {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: #38a169;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+        }
+
+        .toast-notification.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 2px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Toggle for RTL preview -->
+    <button class="rtl-toggle" onclick="toggleRTL()">Switch to RTL / LTR</button>
+
+    <div class="mobile-container">
+        
+        <header class="header">
+            <a href="index.html" class="back-btn" aria-label="Go back">
+                <svg class="back-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </a>
+            <h1 class="title" data-i18n="sec_privacy">Security & Privacy</h1>
+        </header>
+
+        <main class="content">
+            
+            <!-- Security Section -->
+            <h2 class="section-title" data-i18n="section_security">Security</h2>
+            <div class="card-group">
+                <div class="list-item" onclick="togglePasswordForm(this)">
+                    <div class="item-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title" data-i18n="change_password">Change Password</div>
+                        <div class="item-desc" data-i18n="change_password_desc">Secure your account credentials</div>
+                    </div>
+                    <div class="item-action">
+                        <svg class="forward-icon rotate-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Inline Password Form -->
+                <div class="password-form" id="passwordForm">
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="current_password">Current Password</label>
+                        <input type="password" class="form-input" placeholder="Enter current password" data-i18n-placeholder="enter_current">
+                        <button class="toggle-password-btn" onclick="toggleVisibility(this)" aria-label="Toggle password visibility">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                        <a href="#" class="forgot-password-txt" data-i18n="forgot_password" onclick="openBottomSheet(event)">Forgot Password?</a>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="new_password">New Password</label>
+                        <input type="password" class="form-input" placeholder="Min. 8 characters" data-i18n-placeholder="min_8">
+                        <button class="toggle-password-btn" onclick="toggleVisibility(this)" aria-label="Toggle password visibility">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="confirm_password">Confirm New Password</label>
+                        <input type="password" class="form-input" placeholder="Re-enter new password" data-i18n-placeholder="re_enter">
+                        <button class="toggle-password-btn" onclick="toggleVisibility(this)" aria-label="Toggle password visibility">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                    <button class="primary-btn" data-i18n="confirm_password_change">Confirm Password Change</button>
+                </div>
+            </div>
+
+            <!-- Permissions Section -->
+            <h2 class="section-title" data-i18n="section_permissions">Permissions</h2>
+            <div class="card-group">
+                <div class="list-item">
+                    <div class="item-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title" data-i18n="camera_access">Camera Access</div>
+                        <div class="item-desc" data-i18n="camera_desc">Used to upload medical reports</div>
+                    </div>
+                    <div class="item-action">
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="item-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title" data-i18n="photo_access">Photo Library Access</div>
+                        <div class="item-desc" data-i18n="photo_desc">Access your gallery to attach images</div>
+                    </div>
+                    <div class="item-action">
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Privacy Section -->
+            <h2 class="section-title" data-i18n="section_med_privacy">Medical Privacy</h2>
+            <div class="card-group">
+                <div class="list-item">
+                    <div class="item-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="M9 12h6"></path>
+                            <path d="M12 9v6"></path>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title" data-i18n="doctor_access">Doctor Access to Records</div>
+                        <div class="item-desc" data-i18n="doctor_desc">Manage who can view your health data</div>
+                    </div>
+                    <div class="item-action">
+                        <svg class="forward-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal Section -->
+            <h2 class="section-title" data-i18n="section_legal">Legal</h2>
+            <div class="card-group">
+                <a href="privacy-policy.html" class="list-item">
+                    <div class="item-icon legal-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title" data-i18n="privacy_policy">Privacy Policy</div>
+                        <div class="item-desc" data-i18n="privacy_desc">Read our external legal agreements</div>
+                    </div>
+                    <div class="item-action">
+                        <svg class="forward-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Success Toast Notification -->
+            <div id="successToast" class="toast-notification">
+                <span data-i18n="success_toast">Password updated successfully</span>
+            </div>
+
+            <!-- Forgot Password Bottom Sheet -->
+            <div id="forgotPwOverlay" class="bottom-sheet-overlay" onclick="closeBottomSheet(event)">
+                <div class="bottom-sheet-modal" id="forgotPwModal" onclick="event.stopPropagation()">
+                    <div class="modal-drag-handle"></div>
+
+                    <!-- Step 1: Identity -->
+                    <div id="step-1-identity" class="step-container active">
+                        <div class="modal-title" data-i18n="reset_pw_title">Reset Password</div>
+                        <div class="modal-desc" id="resetPwDesc" data-i18n="reset_pw_desc_email">Enter your email to receive a verification code</div>
+
+                        <div class="tab-group">
+                            <button class="tab-btn active" id="tabEmail" onclick="switchTab('email')" data-i18n="email_tab">Email Address</button>
+                            <button class="tab-btn" id="tabPhone" onclick="switchTab('phone')" data-i18n="phone_tab">Phone Number</button>
+                        </div>
+
+                        <div class="form-group" style="margin-top:0;">
+                            <input type="text" id="identityInput" class="form-input" placeholder="Enter your email" data-i18n-placeholder="email_placeholder">
+                        </div>
+
+                        <button class="primary-btn" onclick="goToStep(2)" id="sendCodeBtn" data-i18n="send_code_btn">Send Code</button>
+                    </div>
+
+                    <!-- Step 2: OTP Verification -->
+                    <div id="step-2-otp" class="step-container">
+                        <div class="modal-title" data-i18n="verify_code_title">Verification Code</div>
+                        <div class="modal-desc" data-i18n="verify_code_desc">Enter the code sent to you</div>
+
+                        <div class="otp-container" id="otpInputs">
+                            <input type="text" maxlength="1" class="otp-input" inputmode="numeric" pattern="[0-9]*" oninput="onOtpInput(event, 1)" onkeydown="onOtpKeydown(event, 1)">
+                            <input type="text" maxlength="1" class="otp-input" inputmode="numeric" pattern="[0-9]*" oninput="onOtpInput(event, 2)" onkeydown="onOtpKeydown(event, 2)">
+                            <input type="text" maxlength="1" class="otp-input" inputmode="numeric" pattern="[0-9]*" oninput="onOtpInput(event, 3)" onkeydown="onOtpKeydown(event, 3)">
+                            <input type="text" maxlength="1" class="otp-input" inputmode="numeric" pattern="[0-9]*" oninput="onOtpInput(event, 4)" onkeydown="onOtpKeydown(event, 4)">
+                        </div>
+                        <div class="error-text" id="otpErrorText" data-i18n="err_otp_expired" style="margin-bottom: 16px; text-align: center;">This code has expired. Please request a new one.</div>
+
+                        <div class="timer-text" id="timerContainer">
+                            <span data-i18n="resend_in">Resend in</span> <span class="timer-val" id="countdownVal">00:30</span>
+                        </div>
+
+                        <button class="primary-btn" onclick="goToStep(3)" id="verifyBtn" data-i18n="verify_btn">Verify</button>
+                        <button class="primary-btn" onclick="startTimer()" id="resendBtn" style="display: none; background: #e2e8f0; color: #4a5568" data-i18n="resend_code">Resend Code</button>
+                    </div>
+
+                    <!-- Step 3: New Password -->
+                    <div id="step-3-new-pw" class="step-container">
+                        <div class="modal-title" data-i18n="new_pw_title">New Password</div>
+                        <div class="modal-desc" data-i18n="change_password_desc">Secure your account credentials</div>
+
+                        <div class="form-group" style="margin-top:0;">
+                            <label class="form-label" data-i18n="new_password">New Password</label>
+                            <input type="password" id="newPwInp" class="form-input" placeholder="Min. 8 characters" data-i18n-placeholder="min_8" oninput="validatePassword()">
+                            <button class="toggle-password-btn" onclick="toggleVisibility(this)" aria-label="Toggle password visibility">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <span class="error-text" id="pwLengthErr" data-i18n="err_pwd_length">Must be at least 8 characters</span>
+                            <span class="error-text" id="pwStrengthErr" data-i18n="err_pwd_strength">Use letters and numbers</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="confirm_password">Confirm New Password</label>
+                            <input type="password" id="confirmPwInp" class="form-input" placeholder="Re-enter new password" data-i18n-placeholder="re_enter" oninput="validatePassword()">
+                            <button class="toggle-password-btn" onclick="toggleVisibility(this)" aria-label="Toggle password visibility">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <span class="error-text" id="pwMatchErr" data-i18n="err_pwd_match">Passwords do not match</span>
+                        </div>
+
+                        <button class="primary-btn" id="finalResetBtn" disabled onclick="submitResetPassword()">
+                            <span id="resetBtnText" data-i18n="reset_btn_final">Confirm Reset</span>
+                            <span id="resetBtnLoader" class="loader" style="display:none;"></span>
+                            <span id="resetBtnCheck" style="display:none;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function togglePasswordForm(element) {
+            element.classList.toggle('active');
+            const form = document.getElementById('passwordForm');
+            form.classList.toggle('active');
+        }
+
+        function toggleVisibility(btn) {
+            const input = btn.previousElementSibling;
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+            } else {
+                input.type = "password";
+                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+            }
+        }
+
+        // --- Bottom Sheet Logic ---
+        function openBottomSheet(e) {
+            if(e) e.preventDefault();
+            document.getElementById('forgotPwOverlay').classList.add('active');
+            goToStep(1); // Reset to step 1
+        }
+
+        function closeBottomSheet(e) {
+            if (e && e.target !== document.getElementById('forgotPwOverlay') && e.target !== document.querySelector('.back-btn')) {
+                // Return if click is not on overlay itself
+                return;
+            }
+            document.getElementById('forgotPwOverlay').classList.remove('active');
+            
+            // Clean up states
+            clearInterval(timerInt);
+            let inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach(inp => inp.value = "");
+            document.getElementById('identityInput').value = "";
+            document.getElementById('newPwInp').value = "";
+            document.getElementById('confirmPwInp').value = "";
+            document.getElementById('otpErrorText').classList.remove('active');
+            validatePassword(); // resets button state
+        }
+
+        function switchTab(type) {
+            const btnEmail = document.getElementById('tabEmail');
+            const btnPhone = document.getElementById('tabPhone');
+            const desc = document.getElementById('resetPwDesc');
+            const placeholder = document.getElementById('identityInput');
+            const lang = localStorage.getItem('lang') || 'ar';
+            
+            if (type === 'email') {
+                btnEmail.classList.add('active');
+                btnPhone.classList.remove('active');
+                desc.innerText = translations['reset_pw_desc_email'][lang];
+                placeholder.placeholder = translations['email_placeholder'][lang];
+            } else {
+                btnPhone.classList.add('active');
+                btnEmail.classList.remove('active');
+                desc.innerText = translations['reset_pw_desc_phone'][lang];
+                placeholder.placeholder = translations['phone_placeholder'][lang];
+            }
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + step + (step===1?'-identity':step===2?'-otp':'-new-pw')).classList.add('active');
+            
+            if (step === 2) {
+                startTimer();
+                setTimeout(() => document.querySelectorAll('.otp-input')[0].focus(), 100);
+            }
+        }
+
+        // --- OTP Logic ---
+        function onOtpInput(e, pos) {
+            const inputs = document.querySelectorAll('.otp-input');
+            const val = e.target.value;
+            
+            // Auto advance
+            if (val.length === 1 && pos < 4) {
+                inputs[pos].focus();
+            }
+
+            // Check if timer ended -> show expiration error
+            if (timerVal <= 0 && val.length > 0) {
+                document.getElementById('otpErrorText').classList.add('active');
+            } else {
+                document.getElementById('otpErrorText').classList.remove('active');
+            }
+        }
+
+        function onOtpKeydown(e, pos) {
+            const inputs = document.querySelectorAll('.otp-input');
+            if (e.key === "Backspace" && e.target.value === "" && pos > 1) {
+                inputs[pos - 2].focus();
+            }
+        }
+
+        // Auto paste support
+        document.getElementById('otpInputs').addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pasteData = (e.clipboardData || window.clipboardData).getData('text').trim().slice(0, 4);
+            const inputs = document.querySelectorAll('.otp-input');
+            for(let i=0; i<pasteData.length; i++) {
+                if(/[0-9]/.test(pasteData[i]) && inputs[i]) {
+                    inputs[i].value = pasteData[i];
+                    if(i < 3) inputs[i+1].focus();
+                }
+            }
+            if(timerVal <= 0) {
+                document.getElementById('otpErrorText').classList.add('active');
+            }
+        });
+
+        // --- Timer Logic ---
+        let timerInt;
+        let timerVal = 30;
+        function startTimer() {
+            clearInterval(timerInt);
+            timerVal = 30;
+            document.getElementById('timerContainer').style.display = 'block';
+            document.getElementById('resendBtn').style.display = 'none';
+            document.getElementById('verifyBtn').style.display = 'block';
+            document.getElementById('otpErrorText').classList.remove('active');
+            updateTimerDisplay();
+
+            timerInt = setInterval(() => {
+                timerVal--;
+                updateTimerDisplay();
+                if(timerVal <= 0) {
+                    clearInterval(timerInt);
+                    document.getElementById('timerContainer').style.display = 'none';
+                    document.getElementById('resendBtn').style.display = 'block';
+                    document.getElementById('verifyBtn').style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const secs = timerVal < 10 ? '0' + timerVal : timerVal;
+            document.getElementById('countdownVal').innerText = '00:' + secs;
+        }
+
+        // --- Password Validation ---
+        function validatePassword() {
+            const pw1 = document.getElementById('newPwInp');
+            const pw2 = document.getElementById('confirmPwInp');
+            const btn = document.getElementById('finalResetBtn');
+
+            const val1 = pw1.value;
+            const val2 = pw2.value;
+
+            let validLength = val1.length >= 8;
+            let validStrength = /[a-zA-Z]/.test(val1) && /[0-9]/.test(val1);
+            let validMatch = val1 === val2 && val1.length > 0;
+
+            document.getElementById('pwLengthErr').classList.toggle('active', val1.length > 0 && !validLength);
+            pw1.classList.toggle('input-error', val1.length > 0 && (!validLength || !validStrength));
+            document.getElementById('pwStrengthErr').classList.toggle('active', val1.length > 0 && !validStrength);
+
+            document.getElementById('pwMatchErr').classList.toggle('active', val2.length > 0 && !validMatch);
+            pw2.classList.toggle('input-error', val2.length > 0 && !validMatch);
+
+            btn.disabled = !(validLength && validStrength && validMatch);
+        }
+
+        function submitResetPassword() {
+            const btnText = document.getElementById('resetBtnText');
+            const btnLoader = document.getElementById('resetBtnLoader');
+            const btnCheck = document.getElementById('resetBtnCheck');
+            const btn = document.getElementById('finalResetBtn');
+
+            btn.disabled = true;
+            btnText.style.display = "none";
+            btnLoader.style.display = "inline-block";
+
+            // Mock async request
+            setTimeout(() => {
+                btnLoader.style.display = "none";
+                btnCheck.style.display = "inline-block";
+                
+                // Pause for checkmark visibility, then close & toast
+                setTimeout(() => {
+                    closeBottomSheet({target: document.getElementById('forgotPwOverlay')});
+                    
+                    btnText.style.display = "inline-block";
+                    btnCheck.style.display = "none";
+
+                    showToast();
+                }, 800);
+            }, 1500);
+        }
+
+        function showToast() {
+            const toast = document.getElementById('successToast');
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+
+    </script>
+    <script src="translations.js"></script>
+</body>
+</html>

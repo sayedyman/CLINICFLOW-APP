@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الاعدادات - Healthcare App</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
     <style>
         :root {
             --bg-color: #f7f9fa; /* Soft background */
             --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.85);
             --text-main: #1a202c;
             --text-secondary: #718096;
             --accent-color: #0d9488; /* Soft medical teal */
@@ -17,6 +19,36 @@
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
             --border-radius: 16px;
+            --input-bg: #f8fafc;
+            --input-focus: #ffffff;
+            --item-hover: #f8fafc;
+            --icon-bg: #f1f5f9;
+            --error-bg: #fff5f5;
+            --error-active: #fed7d7;
+        }
+
+        .dark-theme {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: rgba(30, 30, 30, 0.85);
+            --text-main: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --accent-color: #14b8a6;
+            --accent-bg: #2d3748;
+            --border-color: #2d3748;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --toggle-bg: #4a5568;
+            --input-bg: #2d3748;
+            --input-focus: #1e1e1e;
+            --item-hover: #2d3748;
+            --icon-bg: #2d3748;
+            --error-bg: #3c1a1a;
+            --error-active: #5c2020;
+        }
+
+        body, .mobile-container, .header, .profile-card, .card-group, .list-item, .form-input, .bottom-sheet-modal, .avatar-wrapper, .edit-avatar-btn, .logout-container {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         * {
@@ -34,23 +66,22 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
         }
 
         /* Mockup Container */
         .mobile-container {
             width: 100%;
-            max-width: 414px; /* Mobile width */
-            height: 896px; /* Mobile height */
-            max-height: 90vh; /* Responsive height */
+            max-width: 480px; 
+            min-height: 100vh; 
             background-color: var(--bg-color);
             position: relative;
             overflow-y: auto;
-            box-shadow: var(--shadow-md);
-            border-radius: 36px; /* Phone frame */
-            border: 10px solid #1a202c; /* Phone bezel */
             display: flex;
             flex-direction: column;
+            margin: 0 auto;
         }
 
         /* Webkit scrollbar for mockup */
@@ -66,7 +97,7 @@
             align-items: center;
             position: sticky;
             top: 0;
-            background: rgba(247, 249, 250, 0.85);
+            background: var(--header-bg);
             backdrop-filter: blur(16px);
             z-index: 10;
         }
@@ -186,7 +217,7 @@
         }
 
         .list-item:active {
-            background-color: #f8fafc;
+            background-color: var(--item-hover);
         }
 
         .item-icon {
@@ -203,7 +234,7 @@
         }
         
         .item-icon.pref-icon {
-            background: #f1f5f9;
+            background: var(--icon-bg);
             color: #64748b;
         }
 
@@ -246,20 +277,36 @@
             margin-top: 32px;
             cursor: pointer;
             padding: 16px;
-            background: #fff5f5;
+            background: var(--error-bg);
             border-radius: var(--border-radius);
             color: #e53e3e;
             transition: background 0.2s;
         }
         
         .logout-container:active {
-            background: #fed7d7;
+            background: var(--error-active);
         }
         
         .logout-text {
             font-size: 16px;
             font-weight: 700;
             margin-inline-start: 12px;
+        }
+
+        /* Media query for mockup mode on larger desktop screens */
+        @media (min-width: 481px) {
+            body {
+                padding: 1.25rem;
+            }
+            .mobile-container {
+                height: 896px;
+                max-height: 90vh;
+                min-height: auto;
+                box-shadow: var(--shadow-md);
+                border-radius: 36px;
+                border: 10px solid #1a202c;
+                margin: auto;
+            }
         }
 
     </style>
@@ -298,7 +345,7 @@
             <!-- Account Section -->
             <h2 class="section-title" data-i18n="section_account">الحساب</h2>
             <div class="card-group">
-                <div class="list-item">
+                <a href="account.html" class="list-item">
                     <div class="item-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -313,7 +360,7 @@
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
-                </div>
+                </a>
                 <a href="security.html" class="list-item">
                     <div class="item-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -383,8 +430,8 @@
                         </svg>
                     </div>
                 </div>
-                <div class="list-item">
-                    <div class="item-icon pref-icon">
+                <div class="list-item" id="themeToggleBtn">
+                    <div class="item-icon pref-icon" id="themeIcon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="5"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -399,7 +446,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title" data-i18n="theme">الوضع</div>
-                        <div class="item-value" data-i18n="theme_val">فاتح</div>
+                        <div class="item-value" id="themeValueText" data-i18n="theme_light">فاتح</div>
                     </div>
                     <div class="item-action">
                         <svg class="forward-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

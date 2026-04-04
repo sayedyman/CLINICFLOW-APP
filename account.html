@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الحساب - Healthcare App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f9fa; /* Soft background */
+            --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1a202c;
+            --text-secondary: #718096;
+            --accent-color: #0d9488; /* Soft medical teal */
+            --accent-bg: #e6fffa;
+            --border-color: #edf2f7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+            --input-bg: #f8fafc;
+            --input-focus: #ffffff;
+            --item-hover: #f8fafc;
+            --icon-bg: #f1f5f9;
+            --error-bg: #fff5f5;
+            --logout-text: #e53e3e;
+        }
+
+        .dark-theme {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: rgba(30, 30, 30, 0.85);
+            --text-main: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --accent-color: #14b8a6;
+            --accent-bg: #2d3748;
+            --border-color: #2d3748;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --toggle-bg: #4a5568;
+            --input-bg: #2d3748;
+            --input-focus: #1e1e1e;
+            --item-hover: #2d3748;
+            --icon-bg: #2d3748;
+            --error-bg: #3c1a1a;
+            --logout-text: #fc8181;
+        }
+
+        body, .mobile-container, .header, .profile-card, .card-group, .list-item, .form-input, .bottom-sheet-modal, .avatar-wrapper, .edit-avatar-btn, .logout-container {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Mockup Container */
+        .mobile-container {
+            width: 100%;
+            max-width: 480px; 
+            min-height: 100vh; 
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 20px 20px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(16px);
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            flex-grow: 1;
+            text-align: center;
+            color: var(--text-main);
+            margin-inline-end: 44px; /* offset for centering */
+            letter-spacing: -0.5px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .back-btn:active {
+            background: rgba(0,0,0,0.05);
+        }
+
+        html[dir="rtl"] .back-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 0 20px 40px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Profile Avatar */
+        .avatar-section {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0 30px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 1px solid var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: 
+                linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%, #e2e8f0),
+                linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%, #e2e8f0);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
+            overflow: hidden;
+        }
+
+        .edit-avatar-btn {
+            position: absolute;
+            bottom: 2px;
+            right: 4px;
+            width: 28px;
+            height: 28px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--text-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        html[dir="rtl"] .edit-avatar-btn {
+            left: 4px;
+            right: auto;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 52px;
+            padding: 0 16px;
+            border: 1.5px solid var(--border-color); /* subtle border */
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            background: var(--card-bg);
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
+
+        .error-text {
+            display: none;
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 600;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Save Button */
+        .save-btn {
+            width: 100%;
+            height: 52px;
+            background: var(--accent-color); /* Active color */
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: auto; /* Push to bottom */
+            margin-bottom: 20px;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .save-btn:active:not(:disabled) {
+            transform: scale(0.98);
+            background: #0f766e;
+        }
+
+        .save-btn:disabled {
+            background: #cbd5e0;
+            color: #ffffff;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Toast */
+        .toast-notification {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: #38a169;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+        }
+
+        .toast-notification.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 2px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Media query for mockup mode on larger desktop screens */
+        @media (min-width: 481px) {
+            body {
+                padding: 1.25rem;
+            }
+            .mobile-container {
+                height: 896px;
+                max-height: 90vh;
+                min-height: auto;
+                box-shadow: var(--shadow-md);
+                border-radius: 36px;
+                border: 10px solid #1a202c;
+                margin: auto;
+            }
+        }
+
+    </style>
+    <script src="theme.js"></script>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <!-- Header -->
+        <header class="header">
+            <a href="index.html" class="back-btn" aria-label="Go back">
+                <svg class="back-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </a>
+            <h1 class="title" data-i18n="account_mgmt">إدارة الحساب</h1>
+        </header>
+
+        <main class="content">
+            
+            <!-- Toast -->
+            <div id="successToast" class="toast-notification">
+                <span data-i18n="profile_updated">تم تحديث الملف الشخصي بنجاح</span>
+            </div>
+
+            <!-- Avatar -->
+            <div class="avatar-section">
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <button class="edit-avatar-btn" id="editAvatarBtn" aria-label="Edit Avatar">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                    </button>
+                    <input type="file" id="profileImageInput" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <div class="form-group">
+                <label class="form-label" data-i18n="name_label">الاسم</label>
+                <input type="text" class="form-input" id="nameInput" value="السيد الغنام">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" data-i18n="email_label">البريد الالكتروني</label>
+                <input type="email" class="form-input" id="emailInput" value="sayedelghanam123@gmail.com">
+                <div class="error-text" id="emailInputError" data-i18n="invalid_email">بريد إلكتروني غير صالح</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" data-i18n="email_label">البريد الالكتروني</label>
+                <input type="email" class="form-input" id="email2Input" value="sayedelghanam123@gmail.com">
+                <div class="error-text" id="email2InputError" data-i18n="invalid_email">بريد إلكتروني غير صالح</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" data-i18n="phone_label">رقم الهاتف</label>
+                <input type="tel" class="form-input" id="phoneInput" value="+20 1099204491" dir="ltr" style="text-align: right;">
+                <div class="error-text" id="phoneInputError" data-i18n="invalid_phone">رقم هاتف غير صالح</div>
+            </div>
+
+            <button class="save-btn" id="saveBtn" data-i18n="save_btn" disabled>حفظ التغييرات</button>
+
+        </main>
+    </div>
+
+    <script src="translations.js"></script>
+    <script>
+        // Set standard language alignment logic
+        function updateLayoutForDir(lang) {
+            const inputs = document.querySelectorAll('.form-input[type="tel"]');
+            if (lang === 'ar') {
+                inputs.forEach(el => el.style.textAlign = 'right');
+                document.documentElement.setAttribute('dir', 'rtl');
+            } else {
+                inputs.forEach(el => el.style.textAlign = 'left');
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+        }
+
+        // --- Start Form Logic ---
+        const formInputs = document.querySelectorAll('.form-input');
+        const saveBtn = document.getElementById('saveBtn');
+        const profileImageInput = document.getElementById('profileImageInput');
+        const avatarWrapper = document.getElementById('avatarWrapper');
+        const editAvatarBtn = document.getElementById('editAvatarBtn');
+        const toast = document.getElementById('successToast');
+        
+        let baseline = {};
+        let initialImage = '';
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?[0-9\s\-()]{8,20}$/;
+
+        function storeBaseline() {
+            formInputs.forEach(input => {
+                baseline[input.id] = input.value;
+            });
+            initialImage = avatarWrapper.style.backgroundImage;
+        }
+
+        function validateField(input) {
+            const errorEl = document.getElementById(input.id + 'Error');
+            if (!errorEl) return true;
+            
+            let isValid = true;
+            
+            if (input.type === 'email' && input.value !== '') {
+                isValid = emailRegex.test(input.value);
+            } else if (input.type === 'tel' && input.value !== '') {
+                // allow spaces or simple formatting in phone
+                isValid = phoneRegex.test(input.value);
+            }
+            
+            if (!isValid && input.value !== '') {
+                errorEl.style.display = 'block';
+                input.style.borderColor = 'var(--logout-text)';
+                input.style.background = 'var(--error-bg)';
+                return false;
+            } else {
+                errorEl.style.display = 'none';
+                input.style.borderColor = 'var(--border-color)';
+                input.style.background = 'var(--card-bg)';
+                return true;
+            }
+        }
+
+        function checkChanges() {
+            let hasChanges = false;
+            let allValid = true;
+
+            formInputs.forEach(input => {
+                if (baseline[input.id] !== input.value) {
+                    hasChanges = true;
+                }
+                if (!validateField(input)) {
+                    allValid = false;
+                }
+            });
+
+            if (avatarWrapper.style.backgroundImage !== initialImage) {
+                hasChanges = true;
+            }
+
+            saveBtn.disabled = !(hasChanges && allValid);
+        }
+
+        formInputs.forEach(input => {
+            input.addEventListener('input', checkChanges);
+            // also validate on blur
+            input.addEventListener('blur', () => validateField(input));
+        });
+
+        // Image Upload
+        editAvatarBtn.addEventListener('click', () => {
+            profileImageInput.click();
+        });
+
+        profileImageInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    avatarWrapper.style.backgroundImage = `url('${evt.target.result}')`;
+                    avatarWrapper.style.backgroundSize = 'cover';
+                    avatarWrapper.style.backgroundPosition = 'center';
+                    checkChanges();
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Save
+        saveBtn.addEventListener('click', () => {
+            if (saveBtn.disabled) return;
+            
+            // Re-check just in case
+            let valid = true;
+            formInputs.forEach(input => { if (!validateField(input)) valid = false; });
+            if (!valid) return;
+
+            // Loading state
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<span class="loader"></span>';
+            saveBtn.disabled = true;
+
+            setTimeout(() => {
+                // Network simulate
+                storeBaseline(); // Update baseline to current values
+                
+                // Get translated saving text back cleanly
+                // We shouldn't hardcode innerText due to i18n
+                // Re-apply original markup but let i18n render it
+                saveBtn.innerHTML = '';
+                saveBtn.setAttribute('data-i18n', 'save_btn');
+                
+                let lang = localStorage.getItem('lang') || 'ar';
+                if (typeof applyLanguage === 'function') {
+                    applyLanguage(lang); // refresh translation
+                }
+
+                checkChanges(); // Will re-disable since baseline == current
+                
+                toast.classList.add('active');
+                setTimeout(() => {
+                    toast.classList.remove('active');
+                }, 3000);
+            }, 800); // simulate 800ms wait
+        });
+        // --- End Form Logic ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let lang = localStorage.getItem('lang') || 'ar';
+            if (typeof applyLanguage === 'function') {
+                applyLanguage(lang);
+            }
+            updateLayoutForDir(lang);
+            storeBaseline(); // Start tracking initial state right away
+        });
+
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === "lang") {
+                    updateLayoutForDir(document.documentElement.lang);
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
+    </script>
+</body>
+</html>

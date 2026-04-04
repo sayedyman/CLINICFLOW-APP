@@ -10,7 +10,8 @@ const translations = {
     "language": { ar: "اللغه", en: "Language" },
     "language_val": { ar: "عربي", en: "English" },
     "theme": { ar: "الوضع", en: "Theme" },
-    "theme_val": { ar: "فاتح", en: "Light" },
+    "theme_light": { ar: "فاتح", en: "Light" },
+    "theme_dark": { ar: "داكن", en: "Dark" },
     "section_support": { ar: "الدعم", en: "Support" },
     "help_center": { ar: "مركز المساعدة", en: "Help Center" },
     "contact_us": { ar: "تواصل معنا", en: "Contact Us" },
@@ -88,7 +89,14 @@ const translations = {
     "err_pwd_strength": { ar: "استخدم أحرف وأرقام معاً", en: "Use letters and numbers" },
     "err_pwd_match": { ar: "كلمات المرور غير متطابقة", en: "Passwords do not match" },
     "err_otp_expired": { ar: "انتهت صلاحية هذا الرمز. يرجى طلب رمز جديد.", en: "This code has expired. Please request a new one." },
-    "reset_btn_final": { ar: "تأكيد إعادة التعيين", en: "Confirm Reset" }
+    "reset_btn_final": { ar: "تأكيد إعادة التعيين", en: "Confirm Reset" },
+    "name_label": { ar: "الاسم", en: "Name" },
+    "email_label": { ar: "البريد الالكتروني", en: "Email" },
+    "phone_label": { ar: "رقم الهاتف", en: "Phone Number" },
+    "save_btn": { ar: "حفظ التغييرات", en: "Save Changes" },
+    "profile_updated": { ar: "تم تحديث الملف الشخصي بنجاح", en: "Profile updated successfully" },
+    "invalid_email": { ar: "بريد إلكتروني غير صالح", en: "Invalid email format" },
+    "invalid_phone": { ar: "رقم هاتف غير صالح", en: "Invalid phone number format" }
 };
 
 function toggleLanguage() {

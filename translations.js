@@ -114,7 +114,21 @@ const translations = {
     "end_time": { ar: "وقت الانتهاء", en: "End Time" },
     "general_notifs": { ar: "عام", en: "General" },
     "offers_discounts": { ar: "العروض والتخفيضات", en: "Offers & Discounts" },
-    "app_updates": { ar: "تحديثات التطبيق", en: "App Updates" }
+    "app_updates": { ar: "تحديثات التطبيق", en: "App Updates" },
+    "contact_us_form": { ar: "تواصل معنا", en: "Contact Us" },
+    "how_help": { ar: "كيف يمكننا مساعدتك؟", en: "How can we help you?" },
+    "how_help_desc": { ar: "نحن هنا لمساعدتك، لا تتردد في التواصل معنا في أي وقت. فريق خدمة العملاء لدينا متاح للإجابة على استفساراتكم.", en: "We are here to help you, do not hesitate to contact us at any time. Our customer service team is available to answer your inquiries." },
+    "response_time": { ar: "سيتم الرد خلال 24 ساعة", en: "Response will be within 24 hours" },
+    "full_name": { ar: "الاسم الكامل", en: "Full Name" },
+    "enter_full_name": { ar: "أدخل اسمك الثلاثي", en: "Enter your full name" },
+    "email_address": { ar: "البريد الإلكتروني", en: "Email Address" },
+    "message": { ar: "الرسالة", en: "Message" },
+    "write_inquiry": { ar: "اكتب استفسارك هنا...", en: "Write your inquiry here..." },
+    "send_message": { ar: "إرسال الرسالة", en: "Send Message" },
+    "msg_success_toast": { ar: "تم إرسال رسالتك بنجاح", en: "Your message has been sent successfully" },
+    "empty_fields_err": { ar: "يرجى تعبئة جميع الحقول المطلوبة", en: "Please fill in all required fields" },
+    "call_us": { ar: "اتصل بنا", en: "Call Us" },
+    "email_us": { ar: "البريد الإلكتروني", en: "Email" }
 };
 
 function toggleLanguage() {

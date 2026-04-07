@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز المساعدة - Healthcare App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <style>
+        :root {
+            --bg-color: #f7f9fa;
+            --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1a202c;
+            --text-secondary: #718096;
+            --accent-color: #0d9488;
+            --accent-bg: #e6fffa;
+            --border-color: #edf2f7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+            --input-bg: #f8fafc;
+            --input-focus: #ffffff;
+            --item-hover: #f8fafc;
+            --icon-bg: #f1f5f9;
+            --support-card-bg: #4a5568;
+            --support-card-text: #ffffff;
+            --support-card-sub: #cbd5e0;
+            --support-btn-bg: #ffffff;
+            --support-btn-text: #1a202c;
+        }
+
+        .dark-theme {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: rgba(30, 30, 30, 0.85);
+            --text-main: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --accent-color: #14b8a6;
+            --accent-bg: #2d3748;
+            --border-color: #2d3748;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --input-bg: #2d3748;
+            --input-focus: #1e1e1e;
+            --item-hover: #2d3748;
+            --icon-bg: #2d3748;
+            --support-card-bg: #2d3748;
+            --support-card-text: #e2e8f0;
+            --support-card-sub: #a0aec0;
+            --support-btn-bg: #1a202c;
+            --support-btn-text: #e2e8f0;
+        }
+
+        body, .mobile-container, .header, .card-group, .list-item, .search-input, .faq-item, .category-card, .support-card, .support-btn {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 480px; 
+            min-height: 100vh; 
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .header {
+            width: 100%;
+            padding: 40px 20px 20px;
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(16px);
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            text-align: center;
+            grid-column: 2;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: var(--text-main);
+            grid-column: 1;
+        }
+
+        .back-btn:active {
+            background: rgba(0,0,0,0.05);
+        }
+
+        html[dir="rtl"] .back-icon {
+            transform: rotate(180deg);
+        }
+
+        .content {
+            padding: 20px 20px 40px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 52px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 26px;
+            padding: 0 44px 0 16px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+        }
+
+        html[dir="ltr"] .search-input {
+            padding: 0 16px 0 44px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            inset-inline-start: 16px;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            padding-inline-start: 4px;
+        }
+        
+        /* FAQs */
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            border: 1px solid transparent;
+        }
+        
+        .faq-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .faq-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-main);
+            flex-grow: 1;
+        }
+
+        .faq-icon {
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            margin-inline-start: 16px;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            transition: max-height 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), padding 0.3s ease;
+        }
+
+        .faq-item.active {
+            border-color: var(--accent-color);
+        }
+
+        .faq-item.active .faq-content {
+            padding: 0 20px 16px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .category-card:active {
+            transform: scale(0.98);
+        }
+
+        .cat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-color); /* Light background for the icon area inside the card */
+            color: var(--text-main);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Support block */
+        .support-card {
+            background: var(--support-card-bg);
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--support-card-text);
+        }
+
+        .support-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .support-desc {
+            font-size: 14px;
+            color: var(--support-card-sub);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .support-btn {
+            display: inline-block;
+            background: var(--support-btn-bg);
+            color: var(--support-btn-text);
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .support-btn:active {
+            transform: scale(0.98);
+        }
+
+        @media (min-width: 481px) {
+            body {
+                padding: 1.25rem;
+            }
+            .mobile-container {
+                height: 896px;
+                max-height: 90vh;
+                min-height: auto;
+                box-shadow: var(--shadow-md);
+                border-radius: 36px;
+                border: 10px solid #1a202c;
+                margin: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <header class="header">
+            <a href="index.html" class="back-btn" aria-label="Go back">
+                <svg class="back-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </a>
+            <h1 class="title" data-i18n="help_center">مركز المساعدة</h1>
+        </header>
+
+        <main class="content">
+            
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="help_search" placeholder="ابحث عن سؤال أو مشكلة" oninput="filterFAQs()">
+            </div>
+
+            <h2 class="section-title" data-i18n="faq">الأسئلة الشائعة</h2>
+            <div id="faqContainer">
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleFAQ(this)">
+                        <div class="faq-title" data-i18n="faq_1_q">كيف يمكنني حجز موعد؟</div>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-content" data-i18n="faq_1_a">يمكنك الحجز من خلال شاشة المواعيد</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleFAQ(this)">
+                        <div class="faq-title" data-i18n="faq_2_q">كيف أغير كلمة المرور؟</div>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-content" data-i18n="faq_2_a">من خلال إعدادات الحساب</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleFAQ(this)">
+                        <div class="faq-title" data-i18n="faq_3_q">كيف أشارك سجلي الطبي؟</div>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-content" data-i18n="faq_3_a">من خلال صفحة السجل الطبي واختيار مشاركة</div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 32px;" data-i18n="categories">التصنيفات</h2>
+            <div class="categories-grid">
+                <a href="#" class="category-card">
+                    <div class="cat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="item-title" data-i18n="account_cat">الحساب</div>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="cat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="item-title" data-i18n="appointments_cat">المواعيد</div>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="cat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="M9 12h6"></path>
+                            <path d="M12 9v6"></path>
+                        </svg>
+                    </div>
+                    <div class="item-title" data-i18n="med_record_cat">السجل الطبي</div>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="cat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div class="item-title" data-i18n="notifications_cat">الإشعارات</div>
+                </a>
+            </div>
+
+            <div class="support-card">
+                <div class="support-title" data-i18n="not_found">لم تجد ما تبحث عنه؟</div>
+                <div class="support-desc" data-i18n="support_team">فريق الدعم لدينا متاح لمساعدتك على مدار الساعة</div>
+                <a href="contact.html" class="support-btn" data-i18n="contact_us">تواصل معنا</a>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="translations.js"></script>
+    <script>
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const isCurrentlyActive = faqItem.classList.contains('active');
+            
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('.faq-content').style.maxHeight = null;
+            });
+
+            // Toggle current
+            if (!isCurrentlyActive) {
+                faqItem.classList.add('active');
+                const content = faqItem.querySelector('.faq-content');
+                content.style.maxHeight = content.scrollHeight + 16 + "px"; // +16px for padding
+            }
+        }
+
+        function filterFAQs() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const faqs = document.querySelectorAll('#faqContainer .faq-item');
+            
+            faqs.forEach(item => {
+                const title = item.querySelector('.faq-title').innerText.toLowerCase();
+                const content = item.querySelector('.faq-content').innerText.toLowerCase();
+                
+                if (title.includes(input) || content.includes(input)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -96,7 +96,25 @@ const translations = {
     "save_btn": { ar: "حفظ التغييرات", en: "Save Changes" },
     "profile_updated": { ar: "تم تحديث الملف الشخصي بنجاح", en: "Profile updated successfully" },
     "invalid_email": { ar: "بريد إلكتروني غير صالح", en: "Invalid email format" },
-    "invalid_phone": { ar: "رقم هاتف غير صالح", en: "Invalid phone number format" }
+    "invalid_phone": { ar: "رقم هاتف غير صالح", en: "Invalid phone number format" },
+    "enable_notifs": { ar: "تفعيل الاشعارات", en: "Enable Notifications" },
+    "enable_notifs_desc": { ar: "ابق على اطلاع دائم برحلتك الصحية", en: "Stay up to date with your health journey" },
+    "appointments": { ar: "المواعيد", en: "Appointments" },
+    "apt_reminders": { ar: "تذكير بالمواعيد", en: "Appointment Reminders" },
+    "upcoming_visits": { ar: "الزيارات القادمة", en: "Upcoming Visits" },
+    "followup_alerts": { ar: "تنبيهات المتابعة", en: "Follow-up Alerts" },
+    "med_updates": { ar: "آخر المستجدات الطبية", en: "Medical Updates" },
+    "test_results": { ar: "نتائج الاختبار", en: "Test Results" },
+    "rx_updates": { ar: "تحديثات الوصفات الطبية", en: "Prescription Updates" },
+    "doc_msgs": { ar: "رسائل الطبيب", en: "Doctor Messages" },
+    "dnd": { ar: "ممنوع الإزعاج", en: "Do Not Disturb" },
+    "quiet_time": { ar: "وقت هادئ مُجدول", en: "Scheduled Quiet Time" },
+    "quiet_time_desc": { ar: "كتم التنبيهات أثناء دورة نومك", en: "Mute alerts during your sleep cycle" },
+    "start_time": { ar: "وقت البدء", en: "Start Time" },
+    "end_time": { ar: "وقت الانتهاء", en: "End Time" },
+    "general_notifs": { ar: "عام", en: "General" },
+    "offers_discounts": { ar: "العروض والتخفيضات", en: "Offers & Discounts" },
+    "app_updates": { ar: "تحديثات التطبيق", en: "App Updates" }
 };
 
 function toggleLanguage() {

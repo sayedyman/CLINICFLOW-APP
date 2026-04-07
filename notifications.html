@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Healthcare App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f9fa; /* Soft background */
+            --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1a202c;
+            --text-secondary: #718096;
+            --accent-color: #5a67d8; /* Using purple based on wireframe toggle color! */
+            --accent-bg: #ebf4ff;
+            --border-color: #edf2f7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+            --toggle-bg: #cbd5e0;
+            --input-bg: #ffffff;
+            --input-focus: #ffffff;
+            --item-hover: #f8fafc;
+            --icon-bg: #f1f5f9;
+            --error-bg: #fff5f5;
+        }
+
+        .dark-theme {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: rgba(30, 30, 30, 0.85);
+            --text-main: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --accent-color: #7f9cf5;
+            --accent-bg: #2d3748;
+            --border-color: #2d3748;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --toggle-bg: #4a5568;
+            --input-bg: #1e1e1e;
+            --input-focus: #2d3748;
+            --item-hover: #2d3748;
+            --icon-bg: #2d3748;
+            --error-bg: #3c1a1a;
+        }
+
+        body, .mobile-container, .header, .card-group, .list-item, .time-box {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Mockup Container */
+        .mobile-container {
+            width: 100%;
+            max-width: 480px; 
+            min-height: 100vh; 
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+        }
+
+        .mobile-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Header */
+        .header {
+            width: 100%;
+            padding: 40px 20px 20px;
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(16px);
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            text-align: center;
+            grid-column: 2;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: var(--text-main);
+            grid-column: 1;
+        }
+
+        .back-btn:active {
+            background: rgba(0,0,0,0.05);
+        }
+
+        html[dir="rtl"] .back-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 24px 20px 40px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        /* Section Header */
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            margin-top: 28px;
+            padding-inline-start: 4px;
+        }
+        
+        .section-title:first-of-type {
+            margin-top: 8px;
+        }
+
+        /* Cards Grouping */
+        .card-group {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* List Items */
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .list-item.no-border {
+            border-bottom: none;
+            padding-bottom: 8px;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:active {
+            background-color: var(--item-hover);
+        }
+
+        .item-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--accent-bg);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-inline-end: 16px;
+            flex-shrink: 0;
+        }
+
+        .item-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-main);
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .item-action {
+            margin-inline-start: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Toggle Switch (iOS Style) */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 30px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg);
+            transition: .3s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* LTR Positioning */
+        html[dir="ltr"] .slider:before {
+            left: 2px;
+        }
+        html[dir="ltr"] input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* RTL Positioning */
+        html[dir="rtl"] .slider:before {
+            right: 2px;
+        }
+        html[dir="rtl"] input:checked + .slider:before {
+            transform: translateX(-22px);
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+
+        /* DND Time Selector */
+        .time-selector-row {
+            display: flex;
+            gap: 12px;
+            padding: 0 20px 20px;
+        }
+
+        .time-box {
+            flex: 1;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .time-box:active {
+            background-color: var(--item-hover);
+        }
+        
+        .hidden-time-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+        
+        .time-box-content {
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+        }
+
+        .time-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        
+        .time-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            direction: ltr; /* Always LTR for time */
+        }
+        
+        .time-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Disable State for nested settings */
+        .nested-settings {
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
+        .nested-settings.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        /* Media query for mockup mode on larger desktop screens */
+        @media (min-width: 481px) {
+            body {
+                padding: 1.25rem;
+            }
+            .mobile-container {
+                height: 896px;
+                max-height: 90vh;
+                min-height: auto;
+                box-shadow: var(--shadow-md);
+                border-radius: 36px;
+                border: 10px solid #1a202c;
+                margin: auto;
+            }
+        }
+
+    </style>
+    <script src="theme.js"></script>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <!-- Header -->
+        <header class="header">
+            <a href="index.html" class="back-btn" aria-label="Go back">
+                <svg class="back-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </a>
+            <h1 class="title" data-i18n="notifications">Notifications</h1>
+        </header>
+
+        <main class="content">
+            
+            <!-- Master Notification Toggle -->
+            <div class="card-group" style="margin-top: 8px;">
+                <div class="list-item" style="padding-top: 20px; padding-bottom: 20px;">
+                    <div class="item-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title" data-i18n="enable_notifs" style="font-size: 16px;">Enable Notifications</div>
+                        <div class="item-desc" data-i18n="enable_notifs_desc">Stay up to date with your health journey</div>
+                    </div>
+                    <div class="item-action">
+                        <label class="toggle">
+                            <input type="checkbox" id="masterToggle" checked onchange="toggleAllSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="nestedSettings" class="nested-settings">
+                
+                <!-- Appointments Section -->
+                <h2 class="section-title" data-i18n="appointments">Appointments</h2>
+                <div class="card-group">
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="apt_reminders">Appointment Reminders</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="upcoming_visits">Upcoming Visits</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="followup_alerts">Follow-up Alerts</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Updates Section -->
+                <h2 class="section-title" data-i18n="med_updates">Medical Updates</h2>
+                <div class="card-group">
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="test_results">Test Results</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="doc_msgs">Doctor Messages</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="rx_updates">Prescription Updates</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Do Not Disturb Section -->
+                <h2 class="section-title" data-i18n="dnd">Do Not Disturb</h2>
+                <div class="card-group">
+                    <div class="list-item no-border">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="quiet_time">Scheduled Quiet Time</div>
+                            <div class="item-desc" data-i18n="quiet_time_desc">Mute alerts during your sleep cycle</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox" id="dndToggle" onchange="toggleDndTime()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="time-selector-row" id="timeSelectorRow" style="opacity: 0.5; pointer-events: none;">
+                        <div class="time-box" onclick="openTimePicker('start')">
+                            <input type="time" class="hidden-time-input" id="startTimeInput" value="22:00" onchange="updateTimeDisplay('start')">
+                            <div class="time-box-content">
+                                <div class="time-label" data-i18n="start_time">Start Time</div>
+                                <div class="time-value" id="startTimeTxt">10:00 PM</div>
+                            </div>
+                            <svg class="time-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="time-box" onclick="openTimePicker('end')">
+                            <input type="time" class="hidden-time-input" id="endTimeInput" value="07:00" onchange="updateTimeDisplay('end')">
+                            <div class="time-box-content">
+                                <div class="time-label" data-i18n="end_time">End Time</div>
+                                <div class="time-value" id="endTimeTxt">07:00 AM</div>
+                            </div>
+                            <svg class="time-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- General Section -->
+                <h2 class="section-title" data-i18n="general_notifs">General</h2>
+                <div class="card-group">
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="offers_discounts">Offers & Discounts</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-content">
+                            <div class="item-title" data-i18n="app_updates">App Updates</div>
+                        </div>
+                        <div class="item-action">
+                            <label class="toggle">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="translations.js"></script>
+    <script>
+        function toggleAllSettings() {
+            const masterToggle = document.getElementById('masterToggle');
+            const nestedArea = document.getElementById('nestedSettings');
+            
+            if(masterToggle.checked) {
+                nestedArea.classList.remove('disabled');
+            } else {
+                nestedArea.classList.add('disabled');
+            }
+        }
+        
+        function toggleDndTime() {
+            const dndToggle = document.getElementById('dndToggle');
+            const timeRow = document.getElementById('timeSelectorRow');
+            
+            if(dndToggle.checked) {
+                timeRow.style.opacity = "1";
+                timeRow.style.pointerEvents = "auto";
+            } else {
+                timeRow.style.opacity = "0.5";
+                timeRow.style.pointerEvents = "none";
+            }
+        }
+
+        let startTime = "22:00";
+        let endTime = "07:00";
+
+        function openTimePicker(type) {
+            const input = document.getElementById(type + 'TimeInput');
+            if (input) {
+                try {
+                    if (typeof input.showPicker === 'function') {
+                        input.showPicker();
+                    } else {
+                        input.focus();
+                        input.click();
+                    }
+                } catch(e) {
+                    input.click();
+                }
+            }
+        }
+
+        function updateTimeDisplay(type) {
+            const input = document.getElementById(type + 'TimeInput');
+            const txt = document.getElementById(type + 'TimeTxt');
+            
+            if(!input.value) return;
+            
+            if(type === 'start') {
+                startTime = input.value;
+            } else {
+                endTime = input.value;
+            }
+
+            let [hours, minutes] = input.value.split(':');
+            let h = parseInt(hours);
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12;
+            
+            let formattedH = h < 10 ? '0' + h : h;
+            txt.innerText = `${formattedH}:${minutes} ${ampm}`;
+        }
+        
+        // Initialize state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleAllSettings();
+            toggleDndTime();
+        });
+    </script>
+</body>
+</html>

@@ -90,8 +90,10 @@
 
         /* Header */
         .header {
+            width: 100%;
             padding: 40px 20px 20px;
-            display: flex;
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
             align-items: center;
             position: sticky;
             top: 0;
@@ -103,11 +105,10 @@
         .title {
             font-size: 22px;
             font-weight: 700;
-            flex-grow: 1;
-            text-align: center;
             color: var(--text-main);
-            margin-inline-end: 44px; /* offset for centering */
             letter-spacing: -0.5px;
+            text-align: center;
+            grid-column: 2;
         }
 
         .back-btn {
@@ -122,6 +123,7 @@
             border-radius: 50%;
             transition: background 0.2s;
             color: var(--text-secondary);
+            grid-column: 1;
         }
 
         .back-btn:active {
@@ -134,10 +136,11 @@
 
         /* Content Area */
         .content {
-            padding: 0 20px 40px;
+            padding: 24px 20px 40px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
         /* Profile Avatar */
@@ -147,38 +150,50 @@
             padding: 20px 0 30px;
         }
 
-        .avatar-wrapper {
+        .avatar-container {
             position: relative;
+            display: inline-block;
+        }
+
+        .avatar-wrapper {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background-color: transparent;
-            border: 1px solid var(--text-main);
+            background-color: var(--accent-bg);
+            border: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: 
-                linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%, #e2e8f0),
-                linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%, #e2e8f0);
-            background-size: 16px 16px;
-            background-position: 0 0, 8px 8px;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .default-avatar-icon {
+            color: var(--accent-color);
         }
 
         .edit-avatar-btn {
             position: absolute;
-            bottom: 2px;
+            bottom: 0px;
             right: 4px;
-            width: 28px;
-            height: 28px;
-            background: var(--card-bg);
-            border: 1.5px solid var(--text-main);
+            width: 32px;
+            height: 32px;
+            background: var(--accent-color);
+            color: #ffffff;
+            border: 2px solid var(--card-bg);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 2;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .edit-avatar-btn:hover, .edit-avatar-btn:active {
+            transform: scale(1.05);
+            background: #0f766e;
         }
 
         html[dir="rtl"] .edit-avatar-btn {
@@ -355,11 +370,17 @@
 
             <!-- Avatar -->
             <div class="avatar-section">
-                <div class="avatar-wrapper" id="avatarWrapper">
+                <div class="avatar-container">
+                    <div class="avatar-wrapper" id="avatarWrapper">
+                        <svg class="default-avatar-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
                     <button class="edit-avatar-btn" id="editAvatarBtn" aria-label="Edit Avatar">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 20h9"></path>
-                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
                         </svg>
                     </button>
                     <input type="file" id="profileImageInput" accept="image/*" hidden>
@@ -494,6 +515,8 @@
                     avatarWrapper.style.backgroundImage = `url('${evt.target.result}')`;
                     avatarWrapper.style.backgroundSize = 'cover';
                     avatarWrapper.style.backgroundPosition = 'center';
+                    const defaultIcon = avatarWrapper.querySelector('.default-avatar-icon');
+                    if (defaultIcon) defaultIcon.style.display = 'none';
                     checkChanges();
                 }
                 reader.readAsDataURL(e.target.files[0]);
